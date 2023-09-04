@@ -1,20 +1,35 @@
+import { useRef } from 'react';
 import Button from '../ui/Button';
 import styles from './EventsSearch.module.css';
 
 export default function EventsSearch(props: any) {
+  const yearInputRef = useRef<HTMLSelectElement>(null);
+  const monthInputRef = useRef<HTMLSelectElement>(null);
+
+  function submitHandler(event: any) {
+    console.log(`🔎 | EventSearch | submitHandler`);
+
+    event.preventDefault();
+    if (yearInputRef.current === null || monthInputRef.current === null) return;
+
+    const selectedYear: string = yearInputRef.current.value;
+    const selectedMonth: string = monthInputRef.current.value;
+    props.onSearch(selectedYear, selectedMonth);
+  }
+
   return (
-    <form className={styles.form} action="">
+    <form className={styles.form} onSubmit={submitHandler}>
       <div className={styles.controls}>
         <div className={styles.control}>
           <label htmlFor="year">Year</label>
-          <select name="" id="year">
+          <select id="year" ref={yearInputRef}>
             <option value="2021">2021</option>
             <option value="2022">2022</option>
           </select>
         </div>
         <div className={styles.control}>
           <label htmlFor="month">Month</label>
-          <select name="" id="month">
+          <select id="month" ref={monthInputRef}>
             <option value="1">January</option>
             <option value="2">February</option>
             <option value="3">March</option>
